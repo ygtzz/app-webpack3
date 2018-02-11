@@ -9,7 +9,7 @@ html,body{
 /*reset*/
 html * {
     outline: 0;
-    -webkit-text-size-adjust: none;
+    /*移除ios和android的点击蓝色背景，实际上是设置为透明*/
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 html {
