@@ -10,11 +10,7 @@ if (config.enableRem) {
 }
 console.log(env == 'production');
 if (env == 'production') {
-	// aPlugin.push(require('cssnano')({
-	// 	preset: ['default', {
-	// 		svgo: false,
-	// 	}]
-	// }));
+	aPlugin.push(require('postcss-clean')({}));
 }
 
 module.exports = {
