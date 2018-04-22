@@ -117,14 +117,14 @@ module.exports = merge(baseWebapckConfig, {
                     ]
                 })
             },
-            {
-                test: /\.(svg)(\?.*)?$/,
-                loader:'url',
-                options: {
-                    limit: 2048,
-                    name: '/static/images/[name].[ext]'
-                }
-            },
+            // {
+            //     test: /\.(svg)(\?.*)?$/,
+            //     loader:'url',
+            //     options: {
+            //         limit: 2048,
+            //         name: '/static/images/[name].[ext]'
+            //     }
+            // },
             {
                 test: /\.(png|jpe?g|gif)(\?.*)?$/,
                 use: [
@@ -135,31 +135,32 @@ module.exports = merge(baseWebapckConfig, {
                             name:'/static/images/[name].[ext]'
                         }
                     },
-                    {
-                        loader:'image-webpack-loader',
-                        options:{
-                            mozjpeg: {
-                                quality: 65
-                            },
-                            pngquant:{
-                                quality: "65-90",
-                                speed: 4
-                            },
-                            svgo:{
-                                plugins: [
-                                    {
-                                    removeViewBox: false
-                                    },
-                                    {
-                                    removeEmptyAttrs: false
-                                    }
-                                ]
-                            }
-                        }
-                    }
+                    // {
+                    //     loader:'image-webpack-loader',
+                    //     options:{
+                    //         mozjpeg: {
+                    //             quality: 65
+                    //         },
+                    //         pngquant:{
+                    //             quality: "65-90",
+                    //             speed: 4
+                    //         },
+                    //         svgo:{
+                    //             plugins: [
+                    //                 {
+                    //                 removeViewBox: false
+                    //                 },
+                    //                 {
+                    //                 removeEmptyAttrs: false
+                    //                 }
+                    //             ]
+                    //         }
+                    //     }
+                    // }
                 ]
             }
         ]
     },
-    plugins: aPlugin
+    plugins: aPlugin,
+    // devtool: 'cheap-module-source-map'
 });
