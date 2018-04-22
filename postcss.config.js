@@ -8,7 +8,6 @@ if (config.enableRem) {
 	aPlugin.push(require('postcss-plugin-px2rem')(config.px2remOptions));
 	aPlugin.push(require('postcss-flexible')(config.px2rem));
 }
-console.log(env == 'production');
 if (env == 'production') {
 	aPlugin.push(require('postcss-clean')({}));
 }
