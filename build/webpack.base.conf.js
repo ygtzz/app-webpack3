@@ -26,9 +26,7 @@ module.exports = {
         ]
     },
     plugins: [
-        // new webpack.LoaderOptionsPlugin({
-        //     postcss: aPostcss
-        // })
+        
     ],
     resolve:{
         modules: [ "node_modules",sBase,sBase+"pages", sBase+"widget",sBase+'mock'],

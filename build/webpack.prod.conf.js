@@ -161,6 +161,5 @@ module.exports = merge(baseWebapckConfig, {
             }
         ]
     },
-    plugins: aPlugin,
-    devtool: 'cheap-module-source-map'
+    plugins: aPlugin
 });
