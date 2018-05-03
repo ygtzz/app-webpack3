@@ -36,6 +36,8 @@
     "mint-ui": "^2.2.3",
     "mockjs": "^1.0.0",
     "vue": "^2.2.6",
+    "vue-alert2": "^0.1.2",
+    "vue-countdown2": "0.0.3",
     "vue-resource": "^1.2.0",
     "vue-router": "^2.0.1",
     "vuex": "^2.0.0",

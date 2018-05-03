@@ -12,7 +12,11 @@ import routeConfig from './router.js';
 import App from './app.vue';
 //common Component
 import cHeader from './widget/cHeader.vue';
-import {types} from 'index/vuex/mutation-types'
+import {types} from 'index/vuex/mutation-types';
+require('vue-alert2/dist/vue-alert.css');
+import {Alert,Confirm} from 'vue-alert2';
+Vue.use(Alert);
+Vue.use(Confirm);
 
 Vue.component('c-cHeader',cHeader);
 
