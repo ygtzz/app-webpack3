@@ -141,7 +141,7 @@ const mutations = {
     },
     [types['requestIndexData.error']](state, payload) {
         _.assign(state,{
-            loading:fasle,
+            loading:false,
             err:payload
         })
     }
