@@ -200,28 +200,28 @@ export default {
     },
     mounted(){
         this.nNoticeHeight = this.$refs.notice.offsetHeight;
-        this.$alert({
-            show:true,
-            title:'',
-            content:'请填写收货地址',
-            okText:'确定',
-            onOk:function(){
-                console.log('ok');
-            }
-        });
-        this.$confirm({
-            show:true,
-            title:'确认',
-            content:'确定放弃本次兑换?',
-            okText:'去意已决',
-            onOk:function(){
-                console.log('ok');
-            },
-            cancelText:'再看看',
-            onCancel:function(){
-                console.log('cancel');
-            }
-        });
+        // this.$alert({
+        //     show:true,
+        //     title:'',
+        //     content:'请填写收货地址',
+        //     okText:'确定',
+        //     onOk:function(){
+        //         console.log('ok');
+        //     }
+        // });
+        // this.$confirm({
+        //     show:true,
+        //     title:'确认',
+        //     content:'确定放弃本次兑换?',
+        //     okText:'去意已决',
+        //     onOk:function(){
+        //         console.log('ok');
+        //     },
+        //     cancelText:'再看看',
+        //     onCancel:function(){
+        //         console.log('cancel');
+        //     }
+        // });
     },
     destroyed(){
         document.querySelector('section.body').onscroll = null;
