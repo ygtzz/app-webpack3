@@ -1,34 +1,30 @@
 <template>
     <div class="test stage">
-        <h2>test</h2>
-        <div class="imgc" style="margin-top:0">
-            <img src="" data-src="/static/images/1.jpg" alt="">
-            <img src="" data-src="/static/images/2.jpg" alt="">
-            <img src="" data-src="/static/images/3.jpg" alt="">
-        </div>
-        <div class="imgc">
-            <img src="" data-src="/static/images/4.jpg" alt="">
-            <img src="" data-src="/static/images/5.jpg" alt="">
-            <img src="" data-src="/static/images/6.jpg" alt="">
-        </div>
-        <div class="imgc horizontal">
-            <img src="" data-src="/static/images/7.jpg" alt="">
-            <img src="" data-src="/static/images/8.jpg" data-defer="3000" alt="">
+        <h2>scroll</h2>
+        <div class="scrollc">
+            <ul class="scrolls fix scrolls-h">
+                <li class="scroll-item">1</li>
+                <li class="scroll-item">2</li>
+                <li class="scroll-item">3</li>
+                <li class="scroll-item">4</li>
+                <li class="scroll-item">5</li>
+            </ul>
         </div>
     </div>
 </template>
 <style lang="sass" scoped>
-   .imgc{
-        margin-top:250px;
+    .scrollc{width:100%;overflow:hidden;}
+    .scrolls{}
+    .scrolls-h .scroll-item{width:750px;float:left;}
+    .scrolls.moving{
+        transition: transform .3s ease-in-out;        
+        transition: -webkit-transform .3s ease-in-out;
     }
-    img{width:300px;height:200px;display:block;margin-top:50px;}
-    .horizontal{overflow: hidden;}
-    .horizontal *{float:left;margin-left:50px;}
-    .horizontal :first-child{margin-left:0;}
+    /*debug*/
+    .scroll-item {font-size:100px;text-align:center;}
 </style>
 <script>
 import Vue from 'vue';
-import {LazyLoad} from 'my-lazyload';
 
 export default {
     name:'v-test',
@@ -36,30 +32,78 @@ export default {
         
     },
     mounted(){
-        console.log(LazyLoad);
-        new LazyLoad({
-            imgSelector:'img[data-src]',
-            threshold: 250
+        var self = this;
+        self.$nextTick(() => {
+            var scrolls = document.querySelector('.scrolls');
+            self._insertLoopNode(scrolls);
+            self._setContainerWidth(scrolls);
+            
+            setTimeout(function(){
+                self._addClass(scrolls,'moving');
+                var cur = 750,
+                    step = self.step;
+                setInterval(function(){
+                    self._translate(scrolls,-cur);
+                    console.log(cur,-(self.total - step));
+                    if(-cur < -(self.total - step)){
+                        self._resetPos(scrolls);
+                        cur = self.step;
+                    }
+                    cur += self.step;
+                },3000);
+            },300);
         });
     },
     data() {
       return {
-        list:[],
-        dir:'vertical'
+        total: 0,
+        step: 750
       }
     },
-    watch:{
-        
-    },
-    computed:{
-       data(){
-           return {
-
-           }
-       }
-    },
     methods:{
-        
+        _resetPos(container){
+            var self = this;
+            this._removeClass(container,'moving');
+            this._translate(container,-this.step);
+            //transitionend 
+            setTimeout(function(){
+                self._addClass(container,'moving');            
+            },300);
+        },
+        _insertLoopNode(container){
+            var children = container.children;
+            var first = children[0],
+                last = children[children.length-1];
+            container.insertBefore(last.cloneNode(true),first);
+            container.appendChild(first.cloneNode(true));
+        },
+        _setContainerWidth(container){
+            var children = container.children;            
+            var aChild = Array.prototype.slice.call(children);
+            var total = 0;
+            var len = aChild.length,
+                itemWidth = 0;
+            aChild.forEach((item) => {
+                total += item.offsetWidth;
+                itemWidth = item.offsetWidth;
+            });
+            this.total = total;
+            container.style.width = total + 'px';
+            //设置初始定位
+            this._translate(container,-this.step);
+        },
+        _translate(dom,x,y){
+            x = x || 0 ;
+            y = y || 0;
+            dom.style.WebkitTransform = `translate3d(${x}px,${y}px,0px)`;
+            dom.style.transform = `translate3d(${x},${y},0)`;
+        },
+        _addClass(dom,className){
+            dom.classList.add(className);
+        },
+        _removeClass(dom,className){
+            dom.classList.remove(className);
+        }
     },
     components:{
         
