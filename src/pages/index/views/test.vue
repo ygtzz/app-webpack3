@@ -2,7 +2,7 @@
     <div class="test stage">
         <h2>scroll</h2>
         <div id="scrollc" class="scrollc">
-            <ul class="scrolls fix scrolls-h">
+            <ul class="scrolls fix">
                 <li class="scroll-item">1</li>
                 <li class="scroll-item">2</li>
                 <li class="scroll-item">3</li>
@@ -13,15 +13,20 @@
     </div>
 </template>
 <style lang="sass" scoped>
-    .scrollc{width:100%;overflow:hidden;}
+    .scrollc{height:400px;width:100%;overflow:hidden;}
     .scrolls{}
     .scrolls-h .scroll-item{width:750px;float:left;}
+    .scrolls-v .scroll-item{width:750px;}
     .scrolls.moving{
         transition: transform .3s linear;        
         transition: -webkit-transform .3s linear;
     }
     /*debug*/
-    .scroll-item {font-size:100px;text-align:center;}
+    .scrolls{background-color:orange;}
+    .scroll-item {
+        font-size:100px;text-align:center;height:400px;
+        background-color:lightblue;line-height:400px;
+    }
 </style>
 <script>
 import Vue from 'vue';

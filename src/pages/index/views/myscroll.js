@@ -6,7 +6,7 @@ class MyScroll{
             container:'.scrollc',
             total: 0,
             len: 0,
-            step: 750,
+            step: 0,
             delay: 300,
             interval: 3000,
             direction: 'left' //right,top,down
@@ -15,7 +15,7 @@ class MyScroll{
         this.scrollc = document.querySelector('.scrollc');    
         this.scrolls = scrollc.firstChild;
         this._insertLoopNode(this.scrolls);
-        this._setContainerWidth(this.scrolls);
+        this._setContainerSize(this.scrolls);
         this._start(this.scrolls);
     }
     _start(scrolls){
@@ -34,14 +34,16 @@ class MyScroll{
                 cur = -(len-2) * step;
                 break;
             case 'top':
+                cur = -step;
                 break;
             case 'down':
+                cur = -(len-2) * step;
                 break;
             default:
                 throw new Error('myscroll invalid direction');
                 break;
         }
-        this._translate(scrolls,cur);        
+        this._translate(scrolls,cur,dir);        
         setTimeout(function(){
             self._addClass(scrolls,'moving');
             setInterval(function(){
@@ -53,17 +55,23 @@ class MyScroll{
                     case 'right':
                         cur += step;
                         break;
+                    case 'top':
+                        cur -= step;
+                        break;
+                    case 'down':
+                        cur += step;
+                        break;
                     default:
                         break;
                 }
-                self._translate(scrolls,cur);
+                self._translate(scrolls,cur,dir);
                 setTimeout(function(){
-                    cur = self._resetPos(scrolls,dir,cur);
+                    cur = self._resetPos(scrolls,cur,dir);
                 },delay);
             },self.opts.interval); 
         },delay);
     }
-    _resetPos(container,direction,cur){
+    _resetPos(container,cur,direction){
         var self = this,
             step = this.opts.step,
             len = this.opts.len;
@@ -80,6 +88,18 @@ class MyScroll{
                     self._resetContainer(container,cur);
                 }
                 break;
+            case 'top':
+                if(cur <= -(len-1) * step){
+                    cur = -step;
+                    self._resetContainer(container,cur);
+                }
+                break;
+            case 'down':
+                if(cur >= 0){
+                    cur = -(len-2) * step;
+                    self._resetContainer(container,cur);
+                }
+                break;
             default:
                 break;
         }
@@ -90,7 +110,7 @@ class MyScroll{
         var self = this;
         var delay = this.opts.delay;
         this._removeClass(container,'moving');
-        this._translate(container, cur);
+        this._translate(container, cur, this.opts.direction);
         //transitionend 
         setTimeout(function(){
             self._addClass(container,'moving');          
@@ -103,23 +123,40 @@ class MyScroll{
         container.insertBefore(last.cloneNode(true),first);
         container.appendChild(first.cloneNode(true));
     }
-    _setContainerWidth(container){
-        var children = container.children;            
-        var aChild = Array.prototype.slice.call(children);
-        var total = 0;
-        var len = aChild.length,
-            itemWidth = 0;
+    _setContainerSize(container){
+        var children = container.children,        
+            aChild = Array.prototype.slice.call(children),
+            total = 0,
+            len = aChild.length,
+            dir = this.opts.direction,
+            sizeKey = 'width',
+            sizeClass = 'scrolls-h',            
+            itemSize = 0;
+        if(dir == 'top' || dir == 'down'){
+            sizeKey = 'height';
+            sizeClass = 'scrolls-v';
+        }
+        var pSizeKey = sizeKey.slice(0,1).toUpperCase() + sizeKey.slice(1);        
         aChild.forEach((item) => {
-            total += item.offsetWidth;
-            itemWidth = item.offsetWidth;
+            itemSize = item['offset' + pSizeKey]
+            total += itemSize;
         });
         this.opts.total = total;
         this.opts.len = len;
-        container.style.width = total + 'px';
+        if(this.opts.step == 0){
+            this.opts.step = itemSize;
+        }
+        container.style[sizeKey] = total + 'px';
+        this.scrollc.style[sizeKey] = itemSize + 'px';
+        this._addClass(container,sizeClass);
     }
-    _translate(dom,x,y){
-        x = x || 0 ;
-        y = y || 0;
+    _translate(dom,step,dir){
+        var x = step,
+            y = 0;
+        if(dir == 'top' || dir == 'down'){
+            x = 0;
+            y = step;
+        }
         dom.style.WebkitTransform = `translate3d(${x}px,${y}px,0px)`;
         dom.style.transform = `translate3d(${x},${y},0)`;
     }
