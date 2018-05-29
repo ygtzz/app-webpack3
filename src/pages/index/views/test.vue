@@ -13,8 +13,8 @@
     </div>
 </template>
 <style lang="sass" scoped>
-    .scrollc{height:400px;width:100%;overflow:hidden;}
-    .scrolls{}
+    .scrollc{height:400px;width:100%;overflow:hidden;position:relative;}
+    .scrolls{position:relative;}
     .scrolls-h .scroll-item{width:750px;float:left;}
     .scrolls-v .scroll-item{width:750px;}
     .scrolls.moving{
@@ -42,7 +42,9 @@ export default {
         self.$nextTick(() => {
             var myscroll = new MyScroll({
                 container:'#scrollc',
-                direction:'left'
+                direction:'left',
+                step:10,
+                interval:20
             });
         });
     },

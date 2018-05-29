@@ -9,7 +9,9 @@ class MyScroll{
             step: 0,
             delay: 300,
             interval: 3000,
-            direction: 'left' //right,top,down
+            direction: 'left', //right,top,down
+            viewport: 0,
+            mode: 'marquee'
         }, opts);
         this.opts = opts; 
         this.scrollc = document.querySelector('.scrollc');    
@@ -24,20 +26,22 @@ class MyScroll{
             step = self.opts.step,
             delay = self.opts.delay,
             len = self.opts.len,
+            viewport = self.opts.viewport,
+            total = self.opts.total,
             cur = 0;
         console.log('len ' + len);
         switch(dir){
             case 'left':
-                cur = -step;
+                cur = -viewport;
                 break;
             case 'right':
-                cur = -(len-2) * step;
+                cur = -(total-2*viewport);
                 break;
             case 'top':
-                cur = -step;
+                cur = -viewport;
                 break;
             case 'down':
-                cur = -(len-2) * step;
+                cur = -(total-2*viewport);
                 break;
             default:
                 throw new Error('myscroll invalid direction');
@@ -45,7 +49,9 @@ class MyScroll{
         }
         this._translate(scrolls,cur,dir);        
         setTimeout(function(){
-            self._addClass(scrolls,'moving');
+            if(self.opts.mode != 'marquee'){
+                self._addClass(scrolls,'moving');
+            }
             setInterval(function(){
                 console.log(new Date(),cur);
                 switch(dir){
@@ -74,29 +80,31 @@ class MyScroll{
     _resetPos(container,cur,direction){
         var self = this,
             step = this.opts.step,
-            len = this.opts.len;
+            len = this.opts.len,
+            total = this.opts.total,
+            viewport = this.opts.viewport;
         switch(direction){
             case 'left':
-                if(cur <= -(len-1) * step){
-                    cur = -step;
+                if(cur <= -(total - viewport)){
+                    cur = -viewport;
                     self._resetContainer(container,cur);
                 }
                 break;
             case 'right':
                 if(cur >= 0){
-                    cur = -(len-2) * step;
+                    cur = -(total - 2*viewport);
                     self._resetContainer(container,cur);
                 }
                 break;
             case 'top':
-                if(cur <= -(len-1) * step){
-                    cur = -step;
+                if(cur <= -(total - viewport)){
+                    cur = -viewport;
                     self._resetContainer(container,cur);
                 }
                 break;
             case 'down':
                 if(cur >= 0){
-                    cur = -(len-2) * step;
+                    cur = -(total - 2*viewport);
                     self._resetContainer(container,cur);
                 }
                 break;
@@ -113,7 +121,9 @@ class MyScroll{
         this._translate(container, cur, this.opts.direction);
         //transitionend 
         setTimeout(function(){
-            self._addClass(container,'moving');          
+            if(self.opts.mode != 'marquee'){
+                self._addClass(container,'moving');          
+            }
         },delay);
     }
     _insertLoopNode(container){
@@ -148,6 +158,9 @@ class MyScroll{
         }
         container.style[sizeKey] = total + 'px';
         this.scrollc.style[sizeKey] = itemSize + 'px';
+        //todo
+        this.opts.viewport = itemSize;
+        console.log('itemSize ' + itemSize);
         this._addClass(container,sizeClass);
     }
     _translate(dom,step,dir){
