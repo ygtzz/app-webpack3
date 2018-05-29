@@ -1,5 +1,7 @@
 import assign from 'object-assign';
 
+//todo 1. 内部元素宽度获取延迟问问题
+//	   2. 视口宽度如何确定
 class MyScroll{
     constructor(opts){
         opts = assign({
@@ -145,23 +147,23 @@ class MyScroll{
         if(dir == 'top' || dir == 'down'){
             sizeKey = 'height';
             sizeClass = 'scrolls-v';
-        }
-        var pSizeKey = sizeKey.slice(0,1).toUpperCase() + sizeKey.slice(1);        
-        aChild.forEach((item) => {
-            itemSize = item['offset' + pSizeKey]
-            total += itemSize;
-        });
-        this.opts.total = total;
-        this.opts.len = len;
-        if(this.opts.step == 0){
-            this.opts.step = itemSize;
-        }
-        container.style[sizeKey] = total + 'px';
-        this.scrollc.style[sizeKey] = itemSize + 'px';
-        //todo
-        this.opts.viewport = itemSize;
-        console.log('itemSize ' + itemSize);
-        this._addClass(container,sizeClass);
+		}
+		var pSizeKey = sizeKey.slice(0,1).toUpperCase() + sizeKey.slice(1);
+		aChild.forEach((item) => {
+			itemSize = item['offset' + pSizeKey]
+			total += itemSize;
+		});
+		this.opts.total = total;
+		this.opts.len = len;
+		if(this.opts.step == 0){
+			this.opts.step = itemSize;
+		}
+		container.style[sizeKey] = total + 'px';
+		this.scrollc.style[sizeKey] = itemSize + 'px';
+		//todo
+		this.opts.viewport = itemSize;
+		console.log('itemSize ' + itemSize);
+		this._addClass(container,sizeClass);
     }
     _translate(dom,step,dir){
         var x = step,

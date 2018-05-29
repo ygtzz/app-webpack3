@@ -8,6 +8,12 @@
                 <li class="scroll-item">3</li>
                 <li class="scroll-item">4</li>
                 <li class="scroll-item">5</li>
+                <!-- <li>18210808376</li>
+                <li>15210808376</li>
+                <li>17210808376</li>
+                <li>15210808376</li>
+                <li>17210808376</li>
+                <li>13210808376</li> -->
             </ul>
         </div>
     </div>
@@ -15,8 +21,9 @@
 <style lang="sass" scoped>
     .scrollc{height:400px;width:100%;overflow:hidden;position:relative;}
     .scrolls{position:relative;}
-    .scrolls-h .scroll-item{width:750px;float:left;}
-    .scrolls-v .scroll-item{width:750px;}
+    .scrolls-h .scroll-item{float:left;}
+    .scrolls-h *{float:left};
+    .scrolls-v .scroll-item{}
     .scrolls.moving{
         transition: transform .3s linear;        
         transition: -webkit-transform .3s linear;
@@ -24,6 +31,7 @@
     /*debug*/
     .scrolls{background-color:orange;}
     .scroll-item {
+        width:300px;margin-right:20px;
         font-size:100px;text-align:center;height:400px;
         background-color:lightblue;line-height:400px;
     }
@@ -44,7 +52,7 @@ export default {
                 container:'#scrollc',
                 direction:'left',
                 step:10,
-                interval:20
+                interval:200
             });
         });
     },
