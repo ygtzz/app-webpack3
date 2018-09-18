@@ -15,10 +15,13 @@ import cHeader from './widget/cHeader.vue';
 import {types} from 'index/vuex/mutation-types';
 require('vue-alert2/dist/vue-alert.css');
 import {Alert,Confirm} from 'vue-alert2';
+require('vue-toast5/dist/vue-toast.css');
+import toast from 'vue-toast5';
 import assign from 'object-assign';
 
 Vue.use(Alert);
 Vue.use(Confirm);
+Vue.use(toast);
 
 Vue.component('c-cHeader',cHeader);
 
