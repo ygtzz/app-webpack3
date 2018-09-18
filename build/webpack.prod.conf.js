@@ -1,11 +1,11 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var AssetsPlugin = require('assets-webpack-plugin');
 var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 var merge = require('webpack-merge');
 var WebpackChunkHash = require('webpack-chunk-hash');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var baseWebapckConfig = require('./webpack.base.conf');
 var config = require('./config');
 
@@ -31,17 +31,14 @@ var aPlugin = [
         }
     }),
     new LodashModuleReplacementPlugin(),
-    new AssetsPlugin({
-      filename: config.sDest + '/map.json',
-      prettyPrint: true,
-      includeManifest: false
-    }),
-    new ChunkManifestPlugin({
-      filename: "chunk-manifest.json",
-      manifestVariable: "webpackManifest"
-    }),
+    // 启用后vender无法出入，且会在html中插入chunk-mainfest.json的script引用
+    // new ChunkManifestPlugin({
+    //   filename: "chunk-manifest.json",
+    //   manifestVariable: "webpackManifest"
+    // }),
     new webpack.HashedModuleIdsPlugin(),    
-    new WebpackChunkHash()
+    new WebpackChunkHash(),
+    new BundleAnalyzerPlugin()
 ];
 
 //html webpack
@@ -49,7 +46,7 @@ aEntry.forEach(function(item) {
     aPlugin.push(new HtmlWebpackPlugin({
         filename: item + '.html',
         template: config.sBase + 'pages/' + item + '/' + item + '.ejs',
-        chunks: [item, 'vendor', 'common'],
+        chunks: ['vendor', 'common', item],
         inject: 'body',
         title: item + 'Page',
         minify: {
@@ -63,7 +60,7 @@ aEntry.forEach(function(item) {
 
 module.exports = merge(baseWebapckConfig, {
     entry: {
-        vendor: ['vue', 'vuex', 'vue-router', 'vuex-router-sync','vue-resource']
+        vendor: ['vue', 'vuex', 'vue-router', 'vuex-router-sync','vue-resource','object-assign']
     },
     output: {
         path: config.sDist,
