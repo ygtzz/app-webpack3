@@ -46,7 +46,7 @@ aEntry.forEach(function(item) {
     aPlugin.push(new HtmlWebpackPlugin({
         filename: item + '.html',
         template: config.sBase + 'pages/' + item + '/' + item + '.ejs',
-        chunks: ['vendor', 'common', item],
+        chunks: [item, 'vendor', 'common'],
         inject: 'body',
         title: item + 'Page',
         minify: {
@@ -60,7 +60,7 @@ aEntry.forEach(function(item) {
 
 module.exports = merge(baseWebapckConfig, {
     entry: {
-        vendor: ['vue', 'vuex', 'vue-router', 'vuex-router-sync','vue-resource','object-assign']
+        vendor: ['vue', 'vuex', 'vue-router', 'vuex-router-sync','vue-resource']
     },
     output: {
         path: config.sDist,
