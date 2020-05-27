@@ -59,9 +59,9 @@ aEntry.forEach(function(item) {
 });
 
 module.exports = merge(baseWebapckConfig, {
-    entry: {
-        vendor: ['vue', 'vuex', 'vue-router', 'vuex-router-sync','vue-resource']
-    },
+    // entry: {
+    //     // vendor: ['vue', 'vuex', 'vue-router', 'vuex-router-sync','vue-resource']
+    // },
     output: {
         path: config.sDist,
         filename: config.prod.path.script + '[name].[chunkhash:8].js',

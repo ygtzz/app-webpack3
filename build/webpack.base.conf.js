@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var config = require('./config');
 var merge = require('lodash/merge');
+var AutoDllPlugin = require('autodll-webpack-plugin');
+var path = require('path');
 var sBase = config.sBase;
 
 process.noDeprecation = true;
@@ -26,7 +28,15 @@ module.exports = {
         ]
     },
     plugins: [
-        
+        new AutoDllPlugin({
+            inject: true, // will inject the DLL bundles to index.html
+            filename: '[name].dll.js',
+            context: path.join(__dirname, '..'),
+            path: './static/scripts',
+            entry: {
+              vendor: ['vue', 'vuex', 'vue-router', 'vuex-router-sync','vue-resource']
+            }
+        })
     ],
     resolve:{
         modules: [ "node_modules",sBase,sBase+"pages", sBase+"widget",sBase+'mock'],
