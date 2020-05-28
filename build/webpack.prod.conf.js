@@ -6,6 +6,7 @@ var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 var merge = require('webpack-merge');
 var WebpackChunkHash = require('webpack-chunk-hash');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+var SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 var baseWebapckConfig = require('./webpack.base.conf');
 var config = require('./config');
 
@@ -38,7 +39,7 @@ var aPlugin = [
     // }),
     new webpack.HashedModuleIdsPlugin(),    
     new WebpackChunkHash(),
-    new BundleAnalyzerPlugin()
+    // new BundleAnalyzerPlugin()
 ];
 
 //html webpack
@@ -58,7 +59,8 @@ aEntry.forEach(function(item) {
     }));
 });
 
-module.exports = merge(baseWebapckConfig, {
+var smp = new SpeedMeasurePlugin();
+var cfg = merge(baseWebapckConfig, {
     // entry: {
     //     // vendor: ['vue', 'vuex', 'vue-router', 'vuex-router-sync','vue-resource']
     // },
@@ -168,3 +170,7 @@ module.exports = merge(baseWebapckConfig, {
     plugins: aPlugin,
     // devtool: 'cheap-module-source-map'
 });
+
+cfg = smp.wrap(cfg);
+
+module.exports = cfg;
