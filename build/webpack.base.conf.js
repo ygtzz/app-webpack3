@@ -29,7 +29,7 @@ module.exports = {
     },
     plugins: [
         new AutoDllPlugin({
-            inject: true, // will inject the DLL bundles to index.html
+            inject: true,
             filename: '[name].dll.js',
             context: path.join(__dirname, '..'),
             path: './static/scripts',
